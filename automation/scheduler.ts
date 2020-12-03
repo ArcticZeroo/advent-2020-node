@@ -45,12 +45,12 @@ const formatTime = (time: number) => {
 const showCurrentTime = (milliseconds: number) => {
     const duration = Temporal.Duration.from({ milliseconds });
 
+    const hours = formatTime(Math.floor(duration.total({ unit: 'hours' })));
+    const minutes = formatTime(Math.floor(duration.total({ unit: 'minutes' })) % 60);
+    const seconds = formatTime(Math.floor(duration.total({ unit: 'seconds' })) % 60);
+
     process.stdout.cursorTo(0);
-    process.stdout.write([
-        'Hours:', formatTime(Math.floor(duration.total({ unit: 'hours' }))),
-        'Minutes:', formatTime(Math.floor(duration.total({ unit: 'minutes' })) % 60),
-        'Seconds:', formatTime(Math.floor(duration.total({ unit: 'seconds' })) % 60)
-    ].join(' '));
+    process.stdout.write(`Puzzle will open in: ${hours}h ${minutes}m ${seconds}s`);
 };
 
 export const scheduleMidnightTask = (task: () => void, additionalMsAfterMidnight: number = 500) => {
