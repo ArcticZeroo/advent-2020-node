@@ -1,4 +1,5 @@
 import { getFilePath, readFileContents } from '../common/reader';
+import { counter } from '../common/reducers';
 
 const fileContents = readFileContents(getFilePath({ day: 2 }));
 const data = fileContents.split('\n');
@@ -15,11 +16,9 @@ function part1() {
         const [, minCountRaw, maxCountRaw, letter, pass] = item.match(matchingRegex);
         const minCount = Number(minCountRaw);
         const maxCount = Number(maxCountRaw);
-        let letters = new Map();
-        for (const letter of pass) {
-            letters.set(letter, (letters.get(letter) || 0) + 1);
-        }
-        const letterCount = letters.get(letter);
+
+        const letters = [...pass].reduce(...counter());
+        const letterCount = letters[letter];
         if (letterCount >= minCount && letterCount <= maxCount) {
             total++;
         }

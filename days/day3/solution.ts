@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import * as advent from 'advent-api';
 import { InfiniteGrid } from '../../common/grid';
+import * as reducers from '../../common/reducers';
 
 config();
 
@@ -26,11 +27,13 @@ const part1 = async () => {
             grid.set({ x, y }, input[y][x] === '#');
         }
     }
+
     const pos = { x: 0, y: 0 };
     let total = 0;
     while (pos.y < grid.maxValues.y) {
         pos.x += 3;
         pos.y += 1;
+        console.log(pos.x % grid.maxValues.x);
         if (grid.get({ y: pos.y, x: pos.x % grid.maxValues.x })) {
             total++;
         }
@@ -58,7 +61,7 @@ const part2 = async () => {
             }
         }
     }
-    console.log(total.reduce((a, b) => a * b, 1));
+    console.log(total.reduce(...reducers.add()));
 };
 
 const run = async () => {
