@@ -27,3 +27,7 @@ export type Day =
 
 export type Part = 1 | 2;
 
+export interface IPoint {
+    x: number;
+    y: number;
+}
