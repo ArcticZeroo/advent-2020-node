@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="65e52ab1-c110-4650-b5a6-18c16ee8116a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/days/day2.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/files/day2-part1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/automation/create.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/automation/file-creation.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/automation/input-download.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/automation/scheduler.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/grid.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/models.ts" beforeDir="false" afterPath="$PROJECT_DIR$/common/models.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +49,9 @@
       <recent name="C:\projects\advent-2020\files" />
       <recent name="C:\projects\advent-2020\days" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\projects\advent-2020\automation" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -53,7 +62,8 @@
       <option name="presentableId" value="Default" />
       <updated>1606793128907</updated>
       <workItem from="1606793129939" duration="5880000" />
-      <workItem from="1606883242988" duration="2122000" />
+      <workItem from="1606883242988" duration="2639000" />
+      <workItem from="1606930571887" duration="12432000" />
     </task>
     <task id="LOCAL-00001" summary="Part optional, use complement in day1part1">
       <created>1606883344742</created>
@@ -62,7 +72,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606883344742</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Day 2">
+      <created>1606885994450</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1606885994450</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -70,6 +87,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Part optional, use complement in day1part1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Part optional, use complement in day1part1" />
+    <MESSAGE value="Day 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Day 2" />
   </component>
 </project>
