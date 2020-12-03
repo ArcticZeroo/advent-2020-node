@@ -3,7 +3,8 @@
     "module": "commonjs",
     "target": "es2017",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules"

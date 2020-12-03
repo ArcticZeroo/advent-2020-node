@@ -38,14 +38,18 @@ export const getMillisecondsUntilMidnight = (now: ZonedDateTime, midnight: Zoned
     return Math.ceil(timeUntilMidnight.total({ unit: 'milliseconds', relativeTo: now }));
 };
 
+const formatTime = (time: number) => {
+    return time.toString().padStart(2, '0');
+};
+
 const showCurrentTime = (milliseconds: number) => {
     const duration = Temporal.Duration.from({ milliseconds });
 
     process.stdout.cursorTo(0);
     process.stdout.write([
-        'Hours:', Math.floor(duration.total({ unit: 'hours' })),
-        'Minutes:', Math.floor(duration.total({ unit: 'minutes' })) % 60,
-        'Seconds:', Math.floor(duration.total({ unit: 'seconds' })) % 60
+        'Hours:', formatTime(Math.floor(duration.total({ unit: 'hours' }))),
+        'Minutes:', formatTime(Math.floor(duration.total({ unit: 'minutes' })) % 60),
+        'Seconds:', formatTime(Math.floor(duration.total({ unit: 'seconds' })) % 60)
     ].join(' '));
 };
 

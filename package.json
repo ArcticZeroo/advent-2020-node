@@ -16,6 +16,7 @@
   "dependencies": {
     "advent-api": "file:..\\advent-api",
     "dotenv": "^8.2.0",
+    "open": "^7.3.0",
     "proposal-temporal": "^0.6.0"
   }
 }

@@ -1,11 +1,14 @@
+import { IPuzzleDay } from 'advent-api';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 
-const template = (year: number, day: number) => `
+const template = ({ year, day }: IPuzzleDay) => `
 import { config } from 'dotenv';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import * as advent from 'advent-api';
+import { InfiniteGrid } from '../../common/grid';
+import * as reducers from '../../common/reducers';
 
 config();
 
@@ -40,8 +43,8 @@ run().catch(console.error);
 
 export const getFolderPath = (day: number) => path.resolve(path.join(__dirname, '../days/', `day${day}/`));
 
-export const createFile = async (year: number, day: number) => {
+export const createFile = async ({ year, day }: IPuzzleDay) => {
     const folderPath = getFolderPath(day);
     await fs.mkdir(folderPath);
-    await fs.writeFile(path.resolve(folderPath, 'solution.ts'), template(year, day), { flag: 'w' });
+    await fs.writeFile(path.resolve(folderPath, 'solution.ts'), template({ year, day }), { flag: 'w' });
 };
