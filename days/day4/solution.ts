@@ -21,11 +21,11 @@ const submit = async (part: 1 | 2, answer: unknown) => {
     return response;
 };
 
-const fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'];
+const fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'] as const;
 
-const fourDigits = (value) => /\d{4}/.test(value);
+type Passport = Record<string, string>;
 
-const isValid = (passport) => {
+const isValid = (passport: Passport) => {
     for (const field of fields) {
         if (field === 'cid') {
             continue;
@@ -36,27 +36,26 @@ const isValid = (passport) => {
         }
 
         const value = passport[field];
-        const valNum = Number(value);
+        const valAsNum = Number(value);
 
         switch (field) {
             case 'byr':
-                if (!fourDigits(value) || valNum < 1920 || valNum > 2002) {
+                if (valAsNum < 1920 || valAsNum > 2002) {
                     return false;
                 }
                 break;
             case 'iyr':
-                if (!fourDigits(value) || valNum < 2010 || valNum > 2020) {
+                if (valAsNum < 2010 || valAsNum > 2020) {
                     return false;
                 }
                 break;
             case 'eyr':
-                if (!fourDigits(value) || valNum < 2020 || valNum > 2030) {
+                if (valAsNum < 2020 || valAsNum > 2030) {
                     return false;
                 }
                 break;
             case 'hgt': {
-
-                let pattern = /^(\d+)(in|cm)$/;
+                const pattern = /^(\d+)(in|cm)$/;
 
                 if (!pattern.test(value)) {
                     return false;
@@ -76,8 +75,7 @@ const isValid = (passport) => {
                 break;
             }
             case 'hcl': {
-                let pattern = /^[#][0-9a-f]{6}$/;
-                if (!pattern.test(value)) {
+                if (!/^[#][0-9a-f]{6}$/.test(value)) {
                     return false;
                 }
                 break;
@@ -93,6 +91,7 @@ const isValid = (passport) => {
                 if (!/^[0-9]{9}$/.test(value)) {
                     return false;
                 }
+                break;
             }
         }
     }
@@ -100,43 +99,39 @@ const isValid = (passport) => {
     return true;
 };
 
-const part1 = async () => {
-    let total = 0;
-    let passportFields = {};
+const createPassports = (onPassportCreated: (passport: Record<string, string>) => void) => {
+    let currentPassport = {};
     for (const line of input) {
         if (!line.trim()) {
-            if (fields.every(field => passportFields.hasOwnProperty(field))) {
-                total++;
-            }
-            passportFields = {};
+            onPassportCreated({...currentPassport});
+            currentPassport = {};
             continue;
         }
         const pieces = line.split(/\s+/g);
         for (const field of pieces) {
             const [key, value] = field.split(':');
-            passportFields[key] = value;
+            currentPassport[key] = value;
         }
     }
+};
+
+const part1 = async () => {
+    let total = 0;
+    createPassports((passport) => {
+        if (fields.every(field => passport.hasOwnProperty(field))) {
+            total++;
+        }
+    });
     console.log(total);
 };
 
 const part2 = async () => {
     let total = 0;
-    let passportFields = {};
-    for (const line of input) {
-        if (!line.trim()) {
-            if (isValid(passportFields)) {
-                total++;
-            }
-            passportFields = {};
-            continue;
-        }
-        const pieces = line.split(/\s+/g);
-        for (const field of pieces) {
-            const [key, value] = field.split(':');
-            passportFields[key] = value;
-        }
-    }
+    createPassports((passport) => {
+       if (isValid(passport)) {
+           total++;
+       }
+    });
     console.log(total);
 };
 
