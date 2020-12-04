@@ -118,7 +118,7 @@ const createPassports = (onPassportCreated: (passport: Record<string, string>) =
 const part1 = async () => {
     let total = 0;
     createPassports((passport) => {
-        if (fields.every(field => passport.hasOwnProperty(field))) {
+        if (fields.every(field => field === 'cid' || passport.hasOwnProperty(field))) {
             total++;
         }
     });
