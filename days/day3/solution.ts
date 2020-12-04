@@ -33,7 +33,6 @@ const part1 = async () => {
     while (pos.y < grid.maxValues.y) {
         pos.x += 3;
         pos.y += 1;
-        console.log(pos.x % grid.maxValues.x);
         if (grid.get({ y: pos.y, x: pos.x % grid.maxValues.x })) {
             total++;
         }
@@ -61,7 +60,7 @@ const part2 = async () => {
             }
         }
     }
-    console.log(total.reduce(...reducers.add()));
+    console.log(total.reduce(...reducers.multiply()));
 };
 
 const run = async () => {
