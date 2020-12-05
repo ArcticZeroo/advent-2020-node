@@ -53,7 +53,7 @@ const showCurrentTime = (milliseconds: number) => {
     process.stdout.write(`Puzzle will open in: ${hours}h ${minutes}m ${seconds}s`);
 };
 
-export const scheduleMidnightTask = (task: () => void, additionalMsAfterMidnight: number = 3000) => {
+export const scheduleMidnightTask = (task: () => void, additionalMsAfterMidnight: number = 1000) => {
     const midnight = getMidnight();
     const millisecondsUntilMidnight = getMillisecondsUntilMidnight(getNow(), midnight);
 
