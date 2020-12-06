@@ -6,8 +6,12 @@ export const multiply = (initialValue: number = 1) => {
     return [(a, b) => a * b, initialValue] as const;
 }
 
-export const counter = (initialValue = {}) => {
-    return [(a, b) => (a[b] ? a[b]++ : a[b] = 1) && a, initialValue] as const;
+export const counter = (initialValue: Record<any, number> = {}) => {
+    return [(a, b) => (a[b] = a[b] ?? 1) && a, initialValue] as const;
+}
+
+export const mapCounter = <K, V>(initialValue: Map<K, V> = new Map()) => {
+    return [(a, b) => a.set(b, (a.get(b) ?? 0) + 1), initialValue] as const;
 }
 
 export const max = () => {

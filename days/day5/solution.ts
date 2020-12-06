@@ -17,11 +17,11 @@ const getSeats = () => input.map(value => Number.parseInt(
     value.split('')
         .map(char => Number('BR'.includes(char)))
         .join(''),
-    2
+    2 /*radix (binary)*/
 ));
 
 const part1 = async () => {
-    console.log(getSeats().reduce(...reducers.max()));
+    console.log('pt1:', getSeats().reduce(...reducers.max()));
 };
 
 const part2 = async () => {
@@ -29,7 +29,7 @@ const part2 = async () => {
 
     for (let i = 0; i < (1 << 10); i++) {
         if (!allSeats.includes(i) && allSeats.includes(i - 1) && allSeats.includes(i + 1)) {
-            console.log(i);
+            console.log('pt2:', i);
         }
     }
 };
