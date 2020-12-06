@@ -20,9 +20,13 @@ const day = 6;
 const input = readFileSync(path.resolve(path.join(__dirname, 'input.txt')), 'utf-8');
 
 const part1 = async () => {
-    console.log(paragraphs(input)
-        .map(group => uniqueChars(removeWhitespace(group)).size)
-        .reduce(...reducers.add()));
+    console.log(
+        paragraphs(input)
+            .map(removeWhitespace)
+            .map(uniqueChars)
+            .map(s => s.size)
+            .reduce(...reducers.add())
+    );
 };
 
 const part2 = async () => {
