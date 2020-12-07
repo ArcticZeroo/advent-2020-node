@@ -37,3 +37,11 @@ export function setDifference<T>(a: Set<T>, b: Set<T>) {
 export function setIntersection<T>(a: Set<T>, b: Set<T>) {
     return new Set([...a].filter(item => b.has(item)));
 }
+
+export function isBetween(input: string | number, a: number, b: number) {
+    const num = Number(input);
+    if (Number.isNaN(num)) {
+        return false;
+    }
+    return num >= a && num <= b;
+}
