@@ -13,9 +13,7 @@ const day = 7;
 
 const input = readFileSync(path.resolve(path.join(__dirname, 'input.txt')), 'utf-8');
 
-const parentBagRegex = /(.+) bags/;
 const childBagRegex = /(\d+) (.+?) bag/;
-const parentSymbol = Symbol.for('parent');
 
 const formulas = lines(input)
     .reduce((formulas, line) => {
@@ -45,11 +43,9 @@ const part1 = async () => {
 };
 
 const bagCount = (formulas: Record<string, Record<string, number>>, current: Record<string, number>) => {
-    console.log(current);
-    return Object.keys(current).map(color => {
-        console.log('checking', color, current[color]);
-        return current[color] * bagCount(formulas, formulas[color]);
-    }).reduce(...reducers.add(1));
+    return Object.keys(current).map(childColor => {
+        return current[childColor] + current[childColor] * bagCount(formulas, formulas[childColor]);
+    }).reduce(...reducers.add());
 };
 
 const part2 = async () => {
