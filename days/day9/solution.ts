@@ -55,10 +55,9 @@ const part2 = async () => {
         for (let j = i + 2; j < values.length; j++) {
             const range = values.slice(i, j + 1);
             if (range.reduce(...reducers.add()) === invalid) {
-                console.log(i, j);
-                const sorted = [...range].sort();
-                console.log(sorted);
-                console.log(sorted[0] + sorted[sorted.length - 1]);
+                const min = Math.min(...range);
+                const max = Math.max(...range);
+                console.log(min + max);
                 return;
             }
         }
