@@ -54,11 +54,17 @@ const part2 = async () => {
     for (let i = 0; i < values.length - 2; i++) {
         for (let j = i + 2; j < values.length; j++) {
             const range = values.slice(i, j + 1);
-            if (range.reduce(...reducers.add()) === invalid) {
+            const sum = range.reduce(...reducers.add());
+
+            if (sum === invalid) {
                 const min = Math.min(...range);
                 const max = Math.max(...range);
                 console.log(min + max);
                 return;
+            }
+
+            if (sum > invalid) {
+                //break;
             }
         }
     }

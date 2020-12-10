@@ -45,3 +45,38 @@ export function isBetween(input: string | number, a: number, b: number) {
     }
     return num >= a && num <= b;
 }
+
+export function sorted(input: number[], {isAscending = true} = {}) {
+    const copy = [...input];
+    copy.sort((a, b) => isAscending ? a - b : b - a);
+    return copy;
+}
+
+export function minMax(input: number[]) {
+    if (input.length < 1) {
+        return [];
+    }
+    const sortedInput = sorted(input);
+    return [sortedInput[0], sortedInput[sortedInput.length - 1]] as const;
+}
+
+export function last<T>(input: Iterable<T>) {
+    if (Array.isArray(input)) {
+        return input[input.length - 1];
+    }
+    let last;
+    for (const item of input) {
+        last = item;
+    }
+    return last;
+}
+
+export function first<T>(input: Iterable<T>) {
+    if (Array.isArray(input)) {
+        return input[0];
+    }
+    // noinspection LoopStatementThatDoesntLoopJS
+    for (const item of input) {
+        return item;
+    }
+}
