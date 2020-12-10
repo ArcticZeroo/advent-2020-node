@@ -25,13 +25,10 @@ const getAdapters = () => {
 
 const part1 = async () => {
     const adapters = getAdapters();
-    const differences = new Map<number, number>();
+    const differences = new Counter<number>();
     for (let i = 0; i < adapters.length - 1; i++) {
         const diff = adapters[i + 1] - adapters[i];
-        if (!differences.has(diff)) {
-            differences.set(diff, 0);
-        }
-        differences.set(diff, differences.get(diff) + 1);
+        differences.increment(diff);
     }
     console.log(differences.get(1) * differences.get(3));
 };
