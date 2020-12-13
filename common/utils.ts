@@ -1,3 +1,5 @@
+import * as reducers from './reducers';
+
 export function removeWhitespace(s: string) {
     return s.replace(/\s/g, '');
 }
@@ -87,4 +89,53 @@ export function reversed<T>(input: T[]) {
         items.push(input[i]);
     }
     return items;
+}
+
+export function gcd(a: number, b: number) {
+    while (a !== 0) {
+        const tempA = a;
+        a = b % a;
+        b = tempA;
+    }
+    return b;
+}
+
+export function lcm(a: number, b: number) {
+    return (a / gcd(a, b)) * b;
+}
+
+export function modularInverse(value: number, modulo: number) {
+    if (modulo === 1) {
+        return 0;
+    }
+
+    const originalMod = modulo;
+    let y = 0;
+    let x = 1;
+
+    while (value > 1) {
+        const quotient = Math.floor(value / modulo);
+        let temp = modulo;
+
+        // mini euclid
+        modulo = value % modulo;
+        value = temp;
+        temp = y;
+
+        y = x - quotient * y;
+        x = temp;
+    }
+
+    if (x < 0) {
+        x += originalMod;
+    }
+
+    return x;
+}
+
+export function chineseRemainder(input: number[], remainders: number[]) {
+    const totalProduct = input.reduce(...reducers.multiply());
+    const eachDivided = input.map(value => totalProduct / value);
+    const inverses = input.map((value, i) => modularInverse(eachDivided[i], value));
+    return input.map((_, i) => remainders[i] * eachDivided[i] * inverses[i]).reduce(...reducers.add()) % totalProduct;
 }
