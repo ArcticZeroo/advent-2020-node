@@ -1,7 +1,7 @@
 export class Counter<T> extends Map<T, number> {
-    private readonly _defaultValue: number;
+    private readonly _defaultValue: number = 0;
 
-    constructor(iterableOrDefaultValue: Iterable<T> | number = 0) {
+    constructor(iterableOrDefaultValue?: Iterable<T> | number) {
         super();
         if (typeof iterableOrDefaultValue === 'number') {
             this._defaultValue = iterableOrDefaultValue;

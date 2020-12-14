@@ -1,3 +1,4 @@
+import { Counter } from '../common/counter';
 import { getFilePath, readFileContents } from '../common/reader';
 import { counter } from '../common/reducers';
 
@@ -17,8 +18,8 @@ function part1() {
         const minCount = Number(minCountRaw);
         const maxCount = Number(maxCountRaw);
 
-        const letters = [...pass].reduce(...counter());
-        const letterCount = letters[letter];
+        const letters = new Counter(pass);
+        const letterCount = letters.get(letter);
         if (letterCount >= minCount && letterCount <= maxCount) {
             total++;
         }

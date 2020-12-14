@@ -43,9 +43,10 @@ const part2 = async () => {
     const busesInService = data[1].split(',').map(Number);
     const validIdsAndIndices = busesInService.map((value, i) => [value, i] as const).filter(([value]) => !Number.isNaN(value));
     const values = validIdsAndIndices.map(([value]) => value);
-    const indices = validIdsAndIndices.map(([value, i]) => value - i);
-    console.log(values, indices);
-    console.log(chineseRemainder(values, indices));
+    const remainders = validIdsAndIndices.map(([value, i]) => value - i);
+    console.log(validIdsAndIndices);
+    console.log(values, remainders);
+    console.log(chineseRemainder(values, remainders));
 };
 
 const run = async () => {
