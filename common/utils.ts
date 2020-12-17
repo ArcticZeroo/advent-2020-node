@@ -139,3 +139,7 @@ export function chineseRemainder(input: number[], remainders: number[]) {
     const inverses = input.map((value, i) => modularInverse(eachDivided[i], value));
     return input.map((_, i) => remainders[i] * eachDivided[i] * inverses[i]).reduce(...reducers.add()) % totalProduct;
 }
+
+export function isTruthy(value: unknown) {
+    return Boolean(value);
+}
