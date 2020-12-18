@@ -118,3 +118,6 @@ dist
 .pnp.*
 
 .idea/workspace.xml
+
+*.js
+*.js.map
