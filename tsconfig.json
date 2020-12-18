@@ -8,5 +8,11 @@
   },
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "automation",
+    "common",
+    "days",
+    "ongoing"
   ]
 }
