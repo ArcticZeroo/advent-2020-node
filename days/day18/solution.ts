@@ -31,37 +31,6 @@ const OperatorToOperation = {
     [Operator.add]: (a: number, b: number) => a + b,
 }
 
-enum Token {
-    number = 'number',
-    operator = 'operator',
-    openParen = 'openParen',
-    closeParen = 'closeParen'
-}
-
-const Rules = {
-    [Token.number]:     /-?\d+/,
-    [Token.operator]:   new RegExp(`[${Operator.mul}${Operator.add}]`),
-    [Token.openParen]:  /[(]/,
-    [Token.closeParen]: /[)]/,
-};
-
-interface IToken {
-    name: string;
-    value: string;
-}
-
-const tokenize = (equation: string) => {
-    let currentIndex = 0;
-    const tokens: IToken[] = [];
-    for (const name of Object.keys(Rules)) {
-        const regex = new RegExp(Rules[name]);
-        const execResult = regex.exec(equation.slice(currentIndex));
-        if (regex.lastIndex > currentIndex) {
-            tokens.push({ name, value: execResult[0] });
-        }
-    }
-};
-
 const solveEquation = (equation: string) => {
     while (equation.includes('(')) {
         const lastOpenParen = equation.lastIndexOf('(');
