@@ -69,6 +69,7 @@ const createGeneratorValidator = (sourceRules: RuleRecord) => {
             yield value;
         }
 
+        // If the value is already empty, do not continue yielding possible values, or else we'll be here forever.
         if (value === '') {
             return;
         }
@@ -106,9 +107,11 @@ const part1 = async () => {
     console.log(messages.filter(isValidGenerator).length);
 };
 const part2 = async () => {
-    const loopingRules = { ...rules };
-    loopingRules[8] = [[42], [42, 8]];
-    loopingRules[11] = [[42, 31], [42, 11, 31]];
+    const loopingRules = {
+        ...rules,
+        8:  [[42], [42, 8]],
+        11: [[42, 31], [42, 11, 31]]
+    };
 
     const isValid = createGeneratorValidator(loopingRules);
 
