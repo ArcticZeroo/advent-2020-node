@@ -48,42 +48,6 @@ const rules: RuleRecord = ruleDataRaw.map(line => {
     return rules;
 }, {});
 
-const createParsimmonValidator = (sourceRules: RuleRecord) => {
-    const ruleName = id => {
-        if (Number(id) === 0) {
-            return 'start';
-        }
-
-        return `rule${id}`;
-    };
-
-    const productions = {};
-    for (const ruleId of Object.keys(sourceRules)) {
-        const requirements = sourceRules[ruleId];
-        productions[ruleName(ruleId)] = (lang) => {
-            const requirementArguments = [];
-
-            if (Array.isArray(requirements)) {
-                for (const requirement of requirements) {
-                    requirementArguments.push(Parsimmon.seq(requirement.map(requiredId => lang[ruleName(requiredId)])));
-                }
-            } else {
-                requirementArguments.push(Parsimmon.string(requirements));
-            }
-
-            return Parsimmon.alt(...requirementArguments);
-        };
-    }
-
-    const parser = Parsimmon.createLanguage(productions);
-
-    const isValid = (message: string) => {
-        return parser[ruleName(0)].parse(message).status;
-    };
-
-    return isValid;
-};
-
 const createGeneratorValidator = (sourceRules: RuleRecord) => {
     // Attempts to match a rule by ID, and returns the remaining string to match
     const matchRule = function* (ruleId: number, value: string) {
@@ -103,6 +67,10 @@ const createGeneratorValidator = (sourceRules: RuleRecord) => {
     const matchRequirementList: (requiredIds: number[], value: string) => Generator<string> = function* (requiredIds: number[], value: string) {
         if (requiredIds.length === 0) {
             yield value;
+        }
+
+        if (value === '') {
+            return;
         }
 
         const [currentId, ...remainingIds] = requiredIds;
@@ -134,94 +102,15 @@ const createGeneratorValidator = (sourceRules: RuleRecord) => {
 };
 
 const part1 = async () => {
-    const matchesRule = (value: string, ruleId: number, nextMatchIndex: number) => {
-        const requirements = rules[ruleId];
-
-        if (Array.isArray(requirements)) {
-            for (const requirement of requirements) {
-                let newMatchIndex = nextMatchIndex;
-                let allMatched = true;
-                for (const requiredRuleId of requirement) {
-                    newMatchIndex = matchesRule(value, requiredRuleId, newMatchIndex);
-                    if (!newMatchIndex) {
-                        allMatched = false;
-                        break;
-                    }
-                }
-
-                if (allMatched) {
-                    return newMatchIndex;
-                }
-            }
-        } else {
-            const actualChar = value[nextMatchIndex];
-            if (requirements === actualChar) {
-                return nextMatchIndex + 1;
-            }
-        }
-    };
-
-    console.log(messages.filter(message => matchesRule(message, 0, 0) === message.length).length);
-
     const isValidGenerator = createGeneratorValidator(rules);
     console.log(messages.filter(isValidGenerator).length);
 };
-
-const part2peg = () => {
-    const loopingRules = { ...rules };
-    loopingRules[8] = [[42], [42, 8]];
-    loopingRules[11] = [[42, 31], [42, 11, 31]];
-
-    const ruleName = id => {
-        if (Number(id) === 0) {
-            return 'start';
-        }
-
-        return `rule${id}`;
-    };
-
-    const charCodeOfLetterA = 'a'.charCodeAt(0);
-    const numberToChars = (value: number) => {
-        let chars = '';
-        while (value >= 0) {
-            chars = String.fromCharCode(charCodeOfLetterA + (value % 26));
-            value -= 26;
-        }
-        return chars;
-    };
-
-    const grammar = Object.keys(loopingRules).map(ruleId => {
-        const requirements = loopingRules[ruleId];
-
-        const requirementsAsGrammar = Array.isArray(requirements) ? requirements.map(requirement => requirement.map((requiredId, i) => {
-            const ruleNameForId = ruleName(requiredId);
-            // return `requirement${i}:${ruleNameForId}`;
-            return ruleNameForId;
-        }).join(' ')) : [`"${requirements}"`];
-        return `${ruleName(ruleId)}\n = ${requirementsAsGrammar.join('\n / ')}`;
-    }).join('\n\n');
-
-    console.log(grammar);
-
-    const parser = peg.generate(grammar);
-    const isValid = (message: string) => {
-        try {
-            parser.parse(message);
-            return true;
-        } catch (e) {
-            return false;
-        }
-    };
-
-    console.log(messages.filter(isValid));
-};
-
 const part2 = async () => {
     const loopingRules = { ...rules };
     loopingRules[8] = [[42], [42, 8]];
     loopingRules[11] = [[42, 31], [42, 11, 31]];
 
-    const isValid = createParsimmonValidator(loopingRules);
+    const isValid = createGeneratorValidator(loopingRules);
 
     console.log(messages.filter(isValid).length);
 };
