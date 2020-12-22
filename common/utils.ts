@@ -1,3 +1,4 @@
+import { IPoint } from './models';
 import * as reducers from './reducers';
 
 export function removeWhitespace(s: string) {
@@ -48,7 +49,7 @@ export function isBetween(input: string | number, a: number, b: number) {
     return num >= a && num <= b;
 }
 
-export function sorted(input: number[], {isAscending = true} = {}) {
+export function sorted(input: number[], { isAscending = true } = {}) {
     const copy = [...input];
     copy.sort((a, b) => isAscending ? a - b : b - a);
     return copy;
@@ -62,7 +63,7 @@ export function minMax(input: number[]) {
     return [sortedInput[0], sortedInput[sortedInput.length - 1]] as const;
 }
 
-export function last<T>(input: Iterable<T>) {
+export function last<T>(input: Iterable<T>): T {
     if (Array.isArray(input)) {
         return input[input.length - 1];
     }
@@ -83,12 +84,20 @@ export function first<T>(input: Iterable<T>) {
     }
 }
 
-export function reversed<T>(input: T[]) {
-    const items = [];
-    for (let i = input.length - 1; i >= 0; i--) {
-        items.push(input[i]);
+export function reversed(input: string): string;
+export function reversed<T>(input: T[]): T[];
+export function reversed<T>(input: string | T[]) {
+    if (typeof input === 'string') {
+        return reversed(chars(input)).join('');
     }
-    return items;
+
+    if (Array.isArray(input)) {
+        const items = [];
+        for (let i = input.length - 1; i >= 0; i--) {
+            items.push(input[i]);
+        }
+        return items;
+    }
 }
 
 export function gcd(a: number, b: number) {
@@ -142,4 +151,39 @@ export function chineseRemainder(input: number[], remainders: number[]) {
 
 export function isTruthy(value: unknown) {
     return Boolean(value);
+}
+
+export function column<T>(rows: Array<Array<T>>, columnIndex: number) {
+    return rows.map(row => row[columnIndex]);
+}
+
+export type KeysMatching<T, V> = { [K in keyof T]-?: V; }
+
+export function keysOf<T extends KeysMatching<T, string>>(obj: T): Array<keyof T> {
+    return Object.keys(obj) as Array<keyof T>;
+}
+
+export const PointMath = {
+    add(a: IPoint, b: IPoint) {
+        return { x: a.x + b.x, y: a.y + b.y };
+    },
+    sub(a: IPoint, b: IPoint) {
+        return { x: a.x - b.x, y: a.y - b.y };
+    }
+};
+
+const combinationsGenerator = function* <T>(items: T[], count: number, currentIndex: number = 0, currentItems: T[] = []) {
+    for (let i = currentIndex; i < items.length - (count - 1); i++) {
+        currentItems.push(items[i]);
+        if (count === 1) {
+            yield currentItems;
+        } else {
+            yield* combinationsGenerator(items, count - 1, i + 1, currentItems);
+        }
+        currentItems.pop();
+    }
+};
+
+export function combinations<T>(items: T[], count: number): T[] {
+    return combinationsGenerator(items, count);
 }

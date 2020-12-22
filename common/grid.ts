@@ -14,6 +14,53 @@ export class InfiniteGrid<T = any> {
         return { ...this._maxValues };
     }
 
+    get corners(): IPoint[] {
+        const minValues = this.minValues;
+        const maxValues = this.maxValues;
+        return [
+            { x: minValues.x, y: minValues.y },
+            { x: minValues.x, y: maxValues.y },
+            { x: maxValues.x, y: minValues.y },
+            { x: maxValues.x, y: maxValues.y },
+        ];
+    }
+
+    * values() {
+        for (const row of this._points.values()) {
+            for (const value of row.values()) {
+                yield value;
+            }
+        }
+    }
+
+    * keys() {
+        for (const row of this._points.values()) {
+            for (const key of row.keys()) {
+                yield key;
+            }
+        }
+    }
+
+    neighbors(point: IPoint, allowDiagonal: boolean = true) {
+        const neighbors = [
+            { ...point, x: point.x - 1 },
+            { ...point, x: point.x + 1 },
+            { ...point, y: point.y - 1 },
+            { ...point, y: point.y + 1 },
+        ];
+
+        if (allowDiagonal) {
+            neighbors.push(
+                { x: point.x - 1, y: point.y - 1 },
+                { x: point.x + 1, y: point.y - 1 },
+                { x: point.x - 1, y: point.y + 1 },
+                { x: point.x + 1, y: point.y - 1 },
+            );
+        }
+
+        return neighbors;
+    }
+
     private _ensureRowExists(row: number) {
         if (!this._points.has(row)) {
             this._points.set(row, new Map<number, T>());
@@ -51,6 +98,16 @@ export class InfiniteGrid<T = any> {
 
     has(point: IPoint) {
         return this._points.has(point.y) && this._points.get(point.y).has(point.x);
+    }
+
+    find(predicate: (value: T) => boolean): IPoint | undefined {
+        for (const [y, row] of this._points.entries()) {
+            for (const [x, value] of row.entries()) {
+                if (predicate(value)) {
+                    return {x, y};
+                }
+            }
+        }
     }
 
     get allY() {
