@@ -3,27 +3,13 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 
 const template = ({ year, day }: IPuzzleDay) => `
-import { config } from 'dotenv';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import * as advent from 'advent-api';
 import { InfiniteGrid } from '../../common/grid';
 import * as reducers from '../../common/reducers';
 
-config();
-
-const year = ${year};
-const day = ${day};
-
 const input = readFileSync(path.resolve(path.join(__dirname, 'input.txt')), 'utf-8');
-
-const submit = async (part: 1 | 2, answer: unknown) => {
-    const response = await advent.submitAnswer({year, day, part, answer}, {cookie: process.env.ADVENT_COOKIE});
-    console.log(response);
-    const text = await response.text();
-    console.log(text);
-    return response;
-};
 
 const part1 = async () => {
     

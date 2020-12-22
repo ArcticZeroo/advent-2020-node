@@ -187,3 +187,12 @@ const combinationsGenerator = function* <T>(items: T[], count: number, currentIn
 export function combinations<T>(items: T[], count: number): T[] {
     return combinationsGenerator(items, count);
 }
+
+export function allIndexesOf<T>(items: T[], item: T) {
+    const indexes: number[] = [];
+    let currentIndex = -1;
+    while ((currentIndex = items.indexOf(item, currentIndex + 1)) !== -1) {
+        indexes.push(currentIndex);
+    }
+    return indexes;
+}

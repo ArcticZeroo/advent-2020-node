@@ -1,3 +1,5 @@
+import * as util from 'util';
+
 export interface INode<T> {
     value: T;
 }
@@ -27,6 +29,18 @@ export class LinkedList<T> {
 
     get isEmpty() {
         return this.size === 0;
+    }
+
+    *[Symbol.iterator]() {
+        let current = this._head;
+        while (current != null) {
+            yield current.value;
+            current = current.next;
+        }
+    }
+
+    [Symbol.toStringTag]() {
+        return util.inspect([...this]);
     }
 
     insertStart(...values: T[]) {

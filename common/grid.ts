@@ -5,6 +5,15 @@ export class InfiniteGrid<T = any> {
     private _minValues: IPoint = { x: 0, y: 0 };
     private _maxValues: IPoint = { x: 0, y: 0 };
     private _allXValues = new Set<number>();
+    private _size: number = 0;
+
+    get size() {
+        return this._size;
+    }
+
+    get isEmpty() {
+        return this.size === 0;
+    }
 
     get minValues() {
         return { ...this._minValues };
@@ -61,6 +70,24 @@ export class InfiniteGrid<T = any> {
         return neighbors;
     }
 
+    * row(y: number) {
+        const row = this._points.get(y);
+        if (row) {
+            for (const [x, value] of row.entries()) {
+                yield [{ x, y }, value] as const;
+            }
+        }
+    }
+
+    * column(x: number) {
+        for (const y of this.allY) {
+            const row = this._points.get(y);
+            if (row.has(x)) {
+                yield row.get(x);
+            }
+        }
+    }
+
     private _ensureRowExists(row: number) {
         if (!this._points.has(row)) {
             this._points.set(row, new Map<number, T>());
@@ -88,7 +115,11 @@ export class InfiniteGrid<T = any> {
     set(point: IPoint, value: T) {
         this._ensureRowExists(point.y);
         this._updateBounds(point);
-        this._points.get(point.y).set(point.x, value);
+        const row = this._points.get(point.y);
+        if (!row.has(point.x)) {
+            this._size++;
+        }
+        row.set(point.x, value);
         this._allXValues.add(point.x);
     }
 
@@ -104,7 +135,7 @@ export class InfiniteGrid<T = any> {
         for (const [y, row] of this._points.entries()) {
             for (const [x, value] of row.entries()) {
                 if (predicate(value)) {
-                    return {x, y};
+                    return { x, y };
                 }
             }
         }
