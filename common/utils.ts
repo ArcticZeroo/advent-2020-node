@@ -173,6 +173,7 @@ export const PointMath = {
 };
 
 const combinationsGenerator = function* <T>(items: T[], count: number, currentIndex: number = 0, currentItems: T[] = []) {
+    console.log(currentItems, count);
     for (let i = currentIndex; i < items.length - (count - 1); i++) {
         currentItems.push(items[i]);
         if (count === 1) {
@@ -184,7 +185,7 @@ const combinationsGenerator = function* <T>(items: T[], count: number, currentIn
     }
 };
 
-export function combinations<T>(items: T[], count: number): T[] {
+export function combinations<T>(items: T[], count: number): Generator<T[]> {
     return combinationsGenerator(items, count);
 }
 
@@ -196,3 +197,5 @@ export function allIndexesOf<T>(items: T[], item: T) {
     }
     return indexes;
 }
+
+export const wrap = (value: number, around: number) => value < 0 ? wrap(around + value, around) : value % around;

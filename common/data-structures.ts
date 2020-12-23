@@ -4,16 +4,16 @@ export interface INode<T> {
     value: T;
 }
 
-interface ILinkedNode<T> {
+export interface ILinkedNode<T> {
     next?: ILinkedNode<T>;
     previous?: ILinkedNode<T>;
     value: T;
 }
 
 export class LinkedList<T> {
-    private _head?: ILinkedNode<T>;
-    private _tail?: ILinkedNode<T>;
-    private _size: number = 0;
+    protected _head?: ILinkedNode<T>;
+    protected _tail?: ILinkedNode<T>;
+    protected _size: number = 0;
 
     constructor(iterable?: Iterable<T>) {
         if (iterable) {
@@ -31,7 +31,7 @@ export class LinkedList<T> {
         return this.size === 0;
     }
 
-    *[Symbol.iterator]() {
+    * [Symbol.iterator]() {
         let current = this._head;
         while (current != null) {
             yield current.value;
@@ -63,8 +63,9 @@ export class LinkedList<T> {
     }
 
     insertEnd(...values: T[]) {
+        const nodes: Array<ILinkedNode<T>> = [];
         for (const value of values) {
-            const node: ILinkedNode<T> = {value};
+            const node: ILinkedNode<T> = { value };
             this._size++;
             if (!this._tail) {
                 this._tail = node;
@@ -78,7 +79,9 @@ export class LinkedList<T> {
             if (!this._head) {
                 this._head = node;
             }
+            nodes.push(node);
         }
+        return nodes;
     }
 
     popStart() {
@@ -113,5 +116,60 @@ export class LinkedList<T> {
         }
 
         return currentTail?.value;
+    }
+}
+
+export class UnsafeLinkedList<T> extends LinkedList<T> {
+    get head() {
+        return this._head;
+    }
+
+    get tail() {
+        return this._tail;
+    }
+
+    insertAfterNode(node: ILinkedNode<T>, value: T) {
+        const newNode: ILinkedNode<T> = { value };
+        newNode.next = node.next;
+        if (newNode.next) {
+            newNode.next.previous = newNode;
+        }
+        newNode.previous = node;
+        node.next = newNode;
+
+        if (node === this._tail) {
+            this._tail = newNode;
+        }
+
+        return newNode;
+    }
+
+    removeAfterNode(node: ILinkedNode<T>) {
+        // nothing to remove
+        if (!node.next) {
+            return undefined;
+        }
+
+        const oldNextNode = node.next;
+        const newNextNode = node.next.next;
+
+        node.next = newNextNode;
+        if (newNextNode) {
+            newNextNode.previous = node;
+        }
+
+        if (oldNextNode === this._tail) {
+            this._tail = newNextNode;
+        }
+
+        return oldNextNode;
+    }
+
+    * nodes() {
+        let current = this._head;
+        while (current != null) {
+            yield current;
+            current = current.next;
+        }
     }
 }
