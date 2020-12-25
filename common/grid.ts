@@ -43,9 +43,9 @@ export class InfiniteGrid<T = any> {
     }
 
     * keys() {
-        for (const row of this._points.values()) {
-            for (const key of row.keys()) {
-                yield key;
+        for (const [y, row] of this._points.entries()) {
+            for (const x of row.keys()) {
+                yield {x, y};
             }
         }
     }
